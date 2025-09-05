@@ -32,6 +32,7 @@ graphical apps (X11/Wayland), and audio.
 	--additional-packages/-ap:	additional packages to install during initial container setup
 	--init-hooks:		additional commands to execute at the end of container initialization
 	--pre-init-hooks:	additional commands to execute at the start of container initialization
+	--setup-hooks:      additional commands to execute at the end of container initialization, only on first run
 	--init/-I:		use init system (like systemd) inside the container.
 				this will make host's processes not visible from within the container. (assumes --unshare-process)
 				may require additional packages depending on the container image: https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md#using-init-system-inside-a-distrobox

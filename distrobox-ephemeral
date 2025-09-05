@@ -60,6 +60,7 @@ container_additional_packages=""
 container_init_hook=" "
 container_manager_additional_flags=""
 container_pre_init_hook=" "
+container_setup_hook=" "
 
 # Source configuration files, this is done in an hierarchy so local files have
 # priority over system defaults
@@ -189,6 +190,13 @@ while :; do
 				shift
 			fi
 			;;
+		--setup-hooks)
+			if [ -n "$2" ]; then
+				container_setup_hook="${2}"
+				shift
+				shift
+			fi
+			;;
 		*) # Default case: If no more options then break out of the loop.
 			# If we have a flagless option and container_name is not specified
 			# then let's accept argument as container_name
@@ -244,6 +252,10 @@ generate_ephemeral_create_command()
 	if [ -n "${container_pre_init_hook}" ]; then
 		result_command="${result_command} \
 			--pre-init-hooks \"${container_pre_init_hook}\""
+	fi
+	if [ -n "${container_setup_hook}" ]; then
+		result_command="${result_command} \
+			--setup-hooks \"${container_setup_hook}\""
 	fi
 	result_command="${result_command} \
 		${extra_flags} ${create_flags} --yes --name ${name}"

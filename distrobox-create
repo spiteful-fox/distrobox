@@ -71,6 +71,7 @@ container_name=""
 container_name_default="my-distrobox"
 container_hostname=""
 container_pre_init_hook=""
+container_setup_hook=""
 container_user_custom_home=""
 container_user_gid="$(id -rg)"
 container_user_home="${HOME:-"/"}"
@@ -211,6 +212,7 @@ Options:
 	--additional-packages/-ap:	additional packages to install during initial container setup
 	--init-hooks:		additional commands to execute at the end of container initialization
 	--pre-init-hooks:	additional commands to execute at the start of container initialization
+	--setup-hooks:      additional commands to execute at the end of container initialization only when it is first launched
 	--init/-I:		use init system (like systemd) inside the container.
 				this will make host's processes not visible from within the container. (assumes --unshare-process)
 				may require additional packages depending on the container image: https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md#using-init-system-inside-a-distrobox
@@ -436,6 +438,13 @@ while :; do
 				shift
 			fi
 			;;
+		--setup-hooks)
+			if [ -n "$2" ]; then
+				container_setup_hook="${2}"
+				shift
+				shift
+			fi
+			;;
 		--) # End of all options.
 			shift
 			break
@@ -640,6 +649,7 @@ get_clone_image()
 #   container_hostname: string container hostname
 #   container_additional_packages: string additional packages
 #   container_pre_init_hook: string pre init hooks
+#   container_setup_hook: string pre init hooks that only run once
 #   container_init_hook: string init hooks
 #   container_user_home: string user's home path
 #   container_user_name: string user's username
@@ -966,6 +976,7 @@ generate_create_command()
 		--init \"${init}\"
 		--nvidia \"${nvidia}\"
 		--pre-init-hooks \"${container_pre_init_hook}\"
+		--setup-hooks \"${container_setup_hook}\"
 		--additional-packages \"${container_additional_packages}\"
 		-- '${container_init_hook}'
 	"

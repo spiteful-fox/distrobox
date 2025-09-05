@@ -128,6 +128,7 @@ declared multiple times to be compounded:
 | clone | string | Name of the Distrobox container to use as the base for a new container (the container must be stopped). |
 | init_hooks | string_list | Commands to run inside the container, after the packages setup |
 | pre_init_hooks | string_list | Commands to run inside the container, before the packages setup |
+| setup_hooks | string_list | Commands to run inside the container, after the packages setup (only upon first run) |
 | volume | string_list | Additional volumes to mount inside the containers |
 | exported_apps | string_list | App names or desktopfile paths to export |
 | exported_bins | string_list | Binaries to export |
