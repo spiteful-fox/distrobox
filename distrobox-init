@@ -2566,13 +2566,6 @@ fi
 ###############################################################################
 
 ###############################################################################
-if [ -n "${init_hook}" ]; then
-	printf "distrobox: Executing init hooks...\n"
-	# execute eventual init hooks if specified
-	# shellcheck disable=SC2086
-	eval ${init_hook}
-fi
-
 if [ -n "${setup_hook}" ]; then
 	if [ ! -f /._distrobox_setup_done ]; then
 		printf "distrobox: Executing setup hooks...\n"
@@ -2581,6 +2574,13 @@ if [ -n "${setup_hook}" ]; then
 		eval ${setup_hook}
 		touch /._distrobox_setup_done
 	fi
+fi
+
+if [ -n "${init_hook}" ]; then
+	printf "distrobox: Executing init hooks...\n"
+	# execute eventual init hooks if specified
+	# shellcheck disable=SC2086
+	eval ${init_hook}
 fi
 ###############################################################################
 
