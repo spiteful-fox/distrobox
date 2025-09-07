@@ -31,6 +31,7 @@ graphical apps (X11/Wayland), and audio.
 	--additional-flags/-a:	additional flags to pass to the container manager command
 	--additional-packages/-ap:	additional packages to install during initial container setup
 	--init-hooks:		additional commands to execute at the end of container initialization
+	--setup-hooks:      additional commands to execute at the end of container initialization, only on first run
 	--pre-init-hooks:	additional commands to execute at the start of container initialization
 	--init/-I:		use init system (like systemd) inside the container.
 				this will make host's processes not visible from within the container. (assumes --unshare-process)

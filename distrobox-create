@@ -63,6 +63,7 @@ container_generate_entry=1
 container_home_prefix=""
 container_image=""
 container_image_default="registry.fedoraproject.org/fedora-toolbox:latest"
+container_setup_hook=""
 container_init_hook=""
 container_manager="autodetect"
 container_manager_additional_flags=""
@@ -210,6 +211,7 @@ Options:
 	--additional-flags/-a:	additional flags to pass to the container manager command
 	--additional-packages/-ap:	additional packages to install during initial container setup
 	--init-hooks:		additional commands to execute at the end of container initialization
+	--setup-hooks:      additional commands to execute at the end of container initialization only when it is first launched
 	--pre-init-hooks:	additional commands to execute at the start of container initialization
 	--init/-I:		use init system (like systemd) inside the container.
 				this will make host's processes not visible from within the container. (assumes --unshare-process)
@@ -425,6 +427,13 @@ while :; do
 		--init-hooks)
 			if [ -n "$2" ]; then
 				container_init_hook="$2"
+				shift
+				shift
+			fi
+			;;
+		--setup-hooks)
+			if [ -n "$2" ]; then
+				container_setup_hook="$2"
 				shift
 				shift
 			fi
@@ -959,6 +968,7 @@ generate_create_command()
 		--home \"${container_user_custom_home:-"${container_user_home}"}\"
 		--init \"${init}\"
 		--nvidia \"${nvidia}\"
+		--setup-hooks \"${container_setup_hook}\"
 		--pre-init-hooks \"${container_pre_init_hook}\"
 		--additional-packages \"${container_additional_packages}\"
 		-- '${container_init_hook}'

@@ -127,6 +127,7 @@ declared multiple times to be compounded:
 | image | string | Which image should the container use, look [here](../compatibility.md) for a list |
 | clone | string | Name of the Distrobox container to use as the base for a new container (the container must be stopped). |
 | init_hooks | string_list | Commands to run inside the container, after the packages setup |
+| setup_hooks | string_list | Commands to run inside the container, after the packages setup (only upon first run) |
 | pre_init_hooks | string_list | Commands to run inside the container, before the packages setup |
 | volume | string_list | Additional volumes to mount inside the containers |
 | exported_apps | string_list | App names or desktopfile paths to export |

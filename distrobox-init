@@ -70,6 +70,7 @@ container_additional_packages=""
 init=0
 init_hook=""
 nvidia=0
+setup_hook=""
 pre_init_hook=""
 rootful=0
 upgrade=0
@@ -104,6 +105,7 @@ Options:
 	--help/-h:		show this message
 	--additional-packages:	packages to install in addition
 	--init/-I:		whether to use or not init
+	--setup-hooks:      commands to execute after init, only on first run
 	--pre-init-hooks:	commands to execute prior to init
 	--nvidia:		try to integrate host's nVidia drivers in the guest
 	--upgrade/-U:		run init in upgrade mode
@@ -167,6 +169,13 @@ while :; do
 				shift
 				shift
 			fi
+			;;
+		--setup-hooks)
+			if [ -n "$2" ]; then
+				setup_hook="$2"
+			fi
+			shift
+			shift
 			;;
 		--pre-init-hooks)
 			if [ -n "$2" ]; then
@@ -2433,6 +2442,16 @@ fi
 ###############################################################################
 
 ###############################################################################
+if [ -n "${setup_hook}" ]; then
+	if [ ! -f /._distrobox_setup_done ]; then
+		printf "distrobox: Executing setup hooks...\n"
+		# execute setup hooks if specified
+		# shellcheck disable=SC2086
+		eval ${setup_hook}
+		touch /._distrobox_setup_done
+	fi
+fi
+
 if [ -n "${init_hook}" ]; then
 	printf "distrobox: Executing init hooks...\n"
 	# execute eventual init hooks if specified

@@ -58,6 +58,7 @@ verbose=0
 version="1.8.1.2"
 container_additional_packages=""
 container_init_hook=" "
+container_setup_hook=" "
 container_manager_additional_flags=""
 container_pre_init_hook=" "
 
@@ -182,6 +183,13 @@ while :; do
 				shift
 			fi
 			;;
+		--setup-hooks)
+			if [ -n "$2" ]; then
+				container_setup_hook="$2"
+				shift
+				shift
+			fi
+			;;
 		--pre-init-hooks)
 			if [ -n "$2" ]; then
 				container_pre_init_hook="${2}"
@@ -240,6 +248,10 @@ generate_ephemeral_create_command()
 	if [ -n "${container_init_hook}" ]; then
 		result_command="${result_command} \
 			--init-hooks \"${container_init_hook}\""
+	fi
+	if [ -n "${container_setup_hook}" ]; then
+		result_command="${result_command} \
+			--setup-hooks \"${container_setup_hook}\""
 	fi
 	if [ -n "${container_pre_init_hook}" ]; then
 		result_command="${result_command} \
